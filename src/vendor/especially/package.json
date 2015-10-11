@@ -1,0 +1,57 @@
+{
+  "name": "especially",
+  "description": "Abstract operations and other functions drawn from the ECMAScript specification",
+  "keywords": [
+    "ecmascript",
+    "es6",
+    "es2015"
+  ],
+  "version": "2.0.1",
+  "author": {
+    "name": "Domenic Denicola",
+    "email": "d@domenic.me",
+    "url": "https://domenic.me"
+  },
+  "license": "WTFPL",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domenic/especially.git"
+  },
+  "files": [
+    "*.js"
+  ],
+  "scripts": {
+    "test": "mocha --reporter dot",
+    "lint": "jshint ."
+  },
+  "devDependencies": {
+    "jshint": "^2.6.3",
+    "mocha": "^2.2.4"
+  },
+  "gitHead": "aaf5c4297d80323616af74df0dfec92ba5bffaa4",
+  "bugs": {
+    "url": "https://github.com/domenic/especially/issues"
+  },
+  "homepage": "https://github.com/domenic/especially#readme",
+  "_id": "especially@2.0.1",
+  "_shasum": "cc3f524dc706b9de1b5bb259c0dce139e0de9a44",
+  "_from": "especially@*",
+  "_npmVersion": "2.11.3",
+  "_nodeVersion": "2.3.3",
+  "_npmUser": {
+    "name": "domenic",
+    "email": "d@domenic.me"
+  },
+  "maintainers": [
+    {
+      "name": "domenic",
+      "email": "domenic@domenicdenicola.com"
+    }
+  ],
+  "dist": {
+    "shasum": "cc3f524dc706b9de1b5bb259c0dce139e0de9a44",
+    "tarball": "http://registry.npmjs.org/especially/-/especially-2.0.1.tgz"
+  },
+  "directories": {},
+  "_resolved": "https://registry.npmjs.org/especially/-/especially-2.0.1.tgz"
+}
