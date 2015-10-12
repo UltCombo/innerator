@@ -53,7 +53,7 @@ gulp.task('build', ['clean'], function(cb) {
 			webpack(build.config.webpack, function(err, stats) {
 				err = err || stats.compilation.errors[0];
 				if (err) return cb(new plugins.util.PluginError('webpack', err));
-				for (const err of stats.compilation.warnings) plugins.util.log(chalk.white('webpack'), chalk.bgYellow.black('WARN'), err.message);
+				for (const err of stats.compilation.warnings) plugins.util.log(chalk.cyan('webpack'), chalk.bgYellow.black('WARN'), err.message);
 
 				runTests({ ignoreErrors: false }, cb);
 			});
@@ -152,7 +152,7 @@ gulp.task('default', ['clean'], function(cb) {
 				webpack(build.config.webpack, function(err, stats) {
 					err = err || stats.compilation.errors[0];
 					if (err) return endBatch(new plugins.util.PluginError('webpack', err));
-					for (const err of stats.compilation.warnings) plugins.util.log(chalk.white('webpack'), chalk.bgYellow.black('WARN'), err.message);
+					for (const err of stats.compilation.warnings) plugins.util.log(chalk.cyan('webpack'), chalk.bgYellow.black('WARN'), err.message);
 
 					runTests({ ignoreErrors: true }, endBatch);
 				});
