@@ -1,3 +1,4 @@
+/* eslint-disable */
 'use strict';
 
 var path = require('path');
@@ -8,6 +9,7 @@ var webpack = require('webpack');
 var rimraf = require('rimraf');
 var mergeStream = require('merge-stream');
 var globManip = require('glob-manipulate');
+var chalk = require('chalk');
 var build = require('./build');
 var copySrc = ['**'].concat(globManip.negate(build.src.js));
 var isWin = process.platform === 'win32';
@@ -51,7 +53,7 @@ gulp.task('build', ['clean'], function(cb) {
 			webpack(build.config.webpack, function(err, stats) {
 				err = err || stats.compilation.errors[0];
 				if (err) return cb(new plugins.util.PluginError('webpack', err));
-				for (const err of stats.compilation.warnings) plugins.util.log('webpack', chalk.bgYellow.black('WARN'), err.message);
+				for (const err of stats.compilation.warnings) plugins.util.log(chalk.white('webpack'), chalk.bgYellow.black('WARN'), err.message);
 
 				runTests({ ignoreErrors: false }, cb);
 			});
@@ -63,7 +65,6 @@ gulp.task('default', ['clean'], function(cb) {
 	var vinylPaths = require('vinyl-paths');
 	var streamify = require('stream-array');
 	var through2 = require('through2');
-	var chalk = require('chalk');
 
 	var srcToDistRelativePath = path.relative(build.srcBase, build.distBase);
 	var SIGINTed = false;
@@ -151,7 +152,7 @@ gulp.task('default', ['clean'], function(cb) {
 				webpack(build.config.webpack, function(err, stats) {
 					err = err || stats.compilation.errors[0];
 					if (err) return endBatch(new plugins.util.PluginError('webpack', err));
-					for (const err of stats.compilation.warnings) plugins.util.log('webpack', chalk.bgYellow.black('WARN'), err.message);
+					for (const err of stats.compilation.warnings) plugins.util.log(chalk.white('webpack'), chalk.bgYellow.black('WARN'), err.message);
 
 					runTests({ ignoreErrors: true }, endBatch);
 				});
