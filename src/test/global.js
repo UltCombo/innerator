@@ -1,14 +1,14 @@
 import 'should';
 import co from 'co';
-import { lib } from '../bundle';
-const { 'Array.prototype.forEach': { default: forEach } } = lib;
+import installGlobals from '../bundle';
+installGlobals();
 
 describe('Array.prototype.forEach', () => {
 	it('should work', () => {
 		const expected = [4, 0, 1];
 		const actual = [];
 		return co(function *() {
-			yield* expected::forEach(function *(value) {
+			yield* expected.forEach(function *(value) {
 				yield new Promise((fulfill) => {
 					setTimeout(() => {
 						actual.push(value);
