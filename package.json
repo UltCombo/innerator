@@ -69,6 +69,7 @@
     "stream-array": "^1.1.0",
     "through2": "^2.0.0",
     "vinyl-paths": "^1.0.0",
+    "webpack": "^1.12.2",
     "which": "^1.1.1"
   }
 }

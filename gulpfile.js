@@ -4,6 +4,7 @@ var path = require('path');
 var spawn = require('child_process').spawn;
 var gulp = require('gulp');
 var plugins = require('gulp-load-plugins')();
+var webpack = require('webpack');
 var rimraf = require('rimraf');
 var mergeStream = require('merge-stream');
 var globManip = require('glob-manipulate');
@@ -33,9 +34,9 @@ gulp.task('build', ['clean'], function(cb) {
 	// [[gulp4]] TODO remove srcOrderedGlobs
 	mergeStream(
 		plugins.srcOrderedGlobs(globManip.prefix(build.src.js, build.srcBase), { base: build.srcBase })
-			// .pipe(plugins.eslint())
-			// .pipe(plugins.eslint.format())
-			// .pipe(plugins.eslint.failAfterError())
+			.pipe(plugins.eslint())
+			.pipe(plugins.eslint.format())
+			.pipe(plugins.eslint.failAfterError())
 			.pipe(plugins.babel(build.config.babel))
 			.on('error', function(err) {
 				// Improve error logging:
@@ -47,7 +48,13 @@ gulp.task('build', ['clean'], function(cb) {
 	)
 		.pipe(gulp.dest(build.distBase))
 		.on('end', function() {
-			runTests({ ignoreErrors: false }, cb);
+			webpack(build.config.webpack, function(err, stats) {
+				err = err || stats.compilation.errors[0];
+				if (err) return cb(new plugins.util.PluginError('webpack', err));
+				for (const err of stats.compilation.warnings) plugins.util.log('webpack', chalk.bgYellow.black('WARN'), err.message);
+
+				runTests({ ignoreErrors: false }, cb);
+			});
 		})
 		.resume();
 });
@@ -141,9 +148,17 @@ gulp.task('default', ['clean'], function(cb) {
 					return;
 				}
 
-				runTests({ ignoreErrors: true }, endBatch);
+				webpack(build.config.webpack, function(err, stats) {
+					err = err || stats.compilation.errors[0];
+					if (err) return endBatch(new plugins.util.PluginError('webpack', err));
+					for (const err of stats.compilation.warnings) plugins.util.log('webpack', chalk.bgYellow.black('WARN'), err.message);
 
-				function endBatch() {
+					runTests({ ignoreErrors: true }, endBatch);
+				});
+
+				function endBatch(err) {
+					if (err) plugins.util.log(err.toString());
+
 					if (filesFailingLint.length) {
 						plugins.util.log(
 							chalk.yellow((filesFailingLint.length !== 1 ? 'These files have' : 'This file has') + ' linting issues:\n')
