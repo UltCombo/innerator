@@ -1,7 +1,7 @@
 import { define_built_in_data_property as defineBuiltInDataProperty } from './vendor/especially/meta';
 import lib from './lib';
 
-export default () => {
+export function installGlobals({ supportAether = false } = {}) {
 	for (const [method, inneratored] of Object.entries(lib)) {
 		const methodPath = method.split('.');
 		const methodName = methodPath.pop();
@@ -27,14 +27,18 @@ export default () => {
 
 				// NOTE this should probably be wrapped with a try statement, as getters can throw errors.
 				// Though, let's prioritize performance over this rare edge case until it actually happens.
-				if (cb && cb.constructor && cb.constructor.name === 'GeneratorFunction') {
+				if (cb && (
+					supportAether
+					? cb._isAetherGen
+					: cb.constructor && cb.constructor.name === 'GeneratorFunction'
+				)) {
 					return inneratored.default.apply(this, arguments);
 				}
 				return original.apply(this, arguments);
 			})
 		);
 	}
-};
+}
 
 
 export { lib };
