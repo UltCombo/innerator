@@ -1,6 +1,6 @@
 import 'should';
 import co from 'co';
-import { lib } from '../bundle';
+import { lib } from '../..';
 const { 'Array.prototype.forEach': { default: forEach } } = lib;
 
 describe('Array.prototype.forEach', () => {

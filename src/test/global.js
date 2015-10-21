@@ -1,6 +1,6 @@
 import 'should';
 import co from 'co';
-import { installGlobals } from '../bundle';
+import { installGlobals } from '../..';
 installGlobals();
 
 describe('Array.prototype.forEach', () => {
