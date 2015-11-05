@@ -4,7 +4,9 @@
 [![Dependency Status](http://img.shields.io/david/UltCombo/innerator.svg)](https://david-dm.org/UltCombo/innerator)
 [![devDependency Status](http://img.shields.io/david/dev/UltCombo/innerator.svg)](https://david-dm.org/UltCombo/innerator#info=devDependencies)
 
-JavaScript Built-in functions rewritten to understand generators
+JavaScript built-in functions rewritten to understand generators.
+
+The innerator functions closely follow the [Standard ECMA-262 6th Edition](http://www.ecma-international.org/ecma-262/6.0/), a.k.a. ECMAScript 2015, a.k.a. ES6 specification. The inneratored versions of the built-in functions support generator functions where only regular functions were supported, properly executing the generator and iterating over it.
 
 # Install
 
@@ -12,6 +14,78 @@ JavaScript Built-in functions rewritten to understand generators
 npm install --save innerator
 ```
 
+# API
+
+innerator has two modes: library and global.
+
+The library mode is 100% self-contained and does not conflict with existing code.
+
+The global mode overrides built-ins and may break existing code under rare circumstances.
+
+## Library mode
+
+```js
+// Import the library with module syntax:
+import { lib } from 'innerator';
+// Or CommonJS:
+var lib = require('innerator').lib;
+
+// Then call or apply the functions you want:
+lib['Array.prototype.forEach'].default.call([1, 2, 3], function *(item) {
+	console.log(1, 2, 3);
+	yield;
+});
+```
+
+You can also use the [Function Bind syntax](https://github.com/zenparsing/es-function-bind) (compiled with [Babel](http://babeljs.io/)) to write more readable code:
+
+```js
+[1, 2, 3]::lib['Array.prototype.forEach'].default(function *(item) {
+	console.log(1, 2, 3);
+	yield;
+});
+```
+
+The examples above are very contrived, for a real use case you may want to yield promises from inside the generator, and delegate the iteration logic to an outer iterator by `yield*`ing the return value of the innerator library function. See the [unit tests](src/test/lib.js) for more elaborated examples.
+
+## Global mode
+
+```js
+import { installGlobals } from 'innerator';
+installGlobals();
+// Or CommonJS:
+// require('innerator').installGlobals();
+
+[1, 2, 3].forEach(function *(item) {
+	console.log(1, 2, 3);
+	yield;
+});
+
+// Still supports regular functions:
+[1, 2, 3].forEach(function (item) {
+	console.log(1, 2, 3);
+});
+```
+
+The global mode overrides built-ins in such a way that they work with generator functions while keeping compatibility with regular functions.
+
+This means that once the global mode has been installed, passing a generator function to a built-in will behave differently from the native behavior. Most of the time, it does not make sense to pass a generator function to built-in functions, but in rare occasions (e.g. mapping an array to iterator objects) the behavior will be significantly different and thus introduce breaking changes.
+
+The global mode is not recommended unless you are just making a quick experiment or running in an environment where you have full control over where generator functions can be used.
+
+### Options
+
+You can pass an options object as the first argument to the `installGlobals` function in order to customize its behavior. The options object may contain the following properties:
+
+- `supportAether` (boolean, default: `false`) - whether to support code running inside an [Aether](http://aetherjs.com/) sandbox.
+
+## Developing
+
+You may find these commands useful if you want to hack this package's source:
+
+- `npm run dev`: makes a complete build (clean up, lint, compile and test) then starts watching the `src` directory to make incremental builds.
+- `npm test`: makes a complete build.
+
 # Changelog
 
-- **1.0.0**: initial release.
+No stable release yet.
