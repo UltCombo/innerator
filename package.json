@@ -1,6 +1,6 @@
 {
   "name": "innerator",
-  "version": "0.0.0",
+  "version": "0.0.1-0",
   "description": "JavaScript built-in functions rewritten to understand generators",
   "main": "entry_points/api.js",
   "keywords": [
