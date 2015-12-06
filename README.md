@@ -6,7 +6,7 @@
 
 JavaScript built-in functions rewritten to understand generators.
 
-The innerator functions closely follow the [Standard ECMA-262 6th Edition](http://www.ecma-international.org/ecma-262/6.0/), a.k.a. ECMAScript 2015, a.k.a. ES6 specification. The inneratored versions of the built-in functions support generator functions where only regular functions were supported, properly executing the generator and iterating over it.
+The innerator functions closely follow the [ECMA-262's current work](https://tc39.github.io/ecma262/). The inneratored versions of the built-in functions support generator functions where only regular functions were supported, properly executing the generator and iterating over it.
 
 # Install
 
