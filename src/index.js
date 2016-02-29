@@ -36,7 +36,7 @@ export function installGlobals({ supportAether = false } = {}) {
 						}
 						return original.apply(this, arguments);
 					})
-				)
+				);
 			} else {
 				recurse(original, value, wrapper[key]);
 			}
