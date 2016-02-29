@@ -118,6 +118,10 @@ exports.Type = function (x) {
         if (x === null) {
             return "Null";
         }
+
+        // HACK: workaround some Babel bug(s)
+        if (isWellKnownSymbol(x)) return 'Symbol';
+
         return "Object";
     case "function":
         return "Object";
@@ -641,3 +645,8 @@ exports.ArraySpeciesCreate = function (originalArray, length) {
 
     return exports.Construct(C, [length]);
 };
+
+
+function isWellKnownSymbol(value) {
+    return Object.values(require("./well-known-symbols")).some((symbol) => symbol === value);
+}

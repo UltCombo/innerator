@@ -1,8 +1,7 @@
 import 'should';
 import co from 'co';
 import { lib } from '../..';
-const { 'Array.prototype.forEach': { default: forEach } } = lib;
-const { 'Array.prototype.map': { default: map } } = lib;
+const { Array: { prototype: { forEach, map } } } = lib;
 
 describe('Array.prototype.forEach', () => {
 	it('should work', () => {

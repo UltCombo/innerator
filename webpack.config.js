@@ -14,6 +14,6 @@ module.exports = {
 	cache: {}, // Enable caching, see http://webpack.github.io/docs/configuration.html#cache
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin(),
-		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.optimize.OccurrenceOrderPlugin(),
 	],
 };

@@ -28,21 +28,21 @@ The global mode overrides built-ins and may break existing code under rare circu
 // Import the library with module syntax:
 import { lib } from 'innerator';
 // Or CommonJS:
-var lib = require('innerator').lib;
+const lib = require('innerator').lib;
 
 // Then call or apply the functions you want:
-lib['Array.prototype.forEach'].default.call([1, 2, 3], function *(item) {
-	console.log(1, 2, 3);
-	yield;
+yield* lib.Array.prototype.forEach.call([1, 2, 3], function *(value) {
+	yield new Promise(resolve => setTimeout(resolve, value * 100));
+	console.log(value);
 });
 ```
 
 You can also use the [Function Bind syntax](https://github.com/zenparsing/es-function-bind) (compiled with [Babel](http://babeljs.io/)) to write more readable code:
 
 ```js
-[1, 2, 3]::lib['Array.prototype.forEach'].default(function *(item) {
-	console.log(1, 2, 3);
-	yield;
+yield* [1, 2, 3]::lib.Array.prototype.forEach(function *(value) {
+	yield new Promise(resolve => setTimeout(resolve, value * 100));
+	console.log(value);
 });
 ```
 
@@ -51,19 +51,23 @@ The examples above are very contrived, for a real use case you may want to yield
 ## Global mode
 
 ```js
+// Import the library with module syntax:
 import { installGlobals } from 'innerator';
 installGlobals();
 // Or CommonJS:
-// require('innerator').installGlobals();
+require('innerator').installGlobals();
 
-[1, 2, 3].forEach(function *(item) {
-	console.log(1, 2, 3);
-	yield;
+// Now the built-ins will accept generator functions as callbacks
+// and return an iterator over the callback's `yield`s,
+// which you can further delegate to an outer generator:
+const doubledInneratored = yield* [1, 2, 3].map(function *(value) {
+	yield new Promise(resolve => setTimeout(resolve, value * 100));
+	return value * 2;
 });
 
-// Still supports regular functions:
-[1, 2, 3].forEach(function (item) {
-	console.log(1, 2, 3);
+// And of course, the built-ins still support regular callback functions:
+const doubledRegular = [1, 2, 3].map(function (value) {
+	return value * 2;
 });
 ```
 

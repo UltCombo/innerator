@@ -40,7 +40,6 @@ export default function *map(callbackfn) {
 			// 7.c.ii. Let mappedValue be ? Call(callbackfn, T, «kValue, k, O»).
 			const mappedValue = yield* Call(callbackfn, T, [kValue, k, O]);
 
-			// NOTE: At the time of writing, this is not merged yet: https://github.com/tc39/ecma262/pull/230
 			// 7.c.iii. Perform ? CreateDataPropertyOrThrow (A, Pk, mappedValue).
 			CreateDataPropertyOrThrow(A, Pk, mappedValue);
 		}
